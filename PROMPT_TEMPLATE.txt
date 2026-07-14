@@ -1,0 +1,15 @@
+[PROMPT DA INCOLLARE ALL'AVVIO DELLA CHAT AI CON IL FILE PROTOCOL_1to1.md ALLEGATO]
+
+Ciao! Ti ho allegato il documento `PROTOCOL_1to1.md` che stabilisce le regole vincolanti e il protocollo di lavoro per questo progetto.
+
+Ho una serie di file PDF del mio corso / libro di testo all'interno della cartella `pdfs/` (oppure un unico PDF master che ho già suddiviso o che ti chiedo di mappare).
+
+Il mio obiettivo è convertire questo materiale in un progetto LaTeX di qualità editoriale, rigorosamente fedele 1:1 all'originale, modularizzato con il pacchetto `subfiles` e pronto per la compilazione su Overleaf o localmente.
+
+Per iniziare subito (Lotto 1):
+1. Verifica quali file PDF sono presenti in `pdfs/` e imposta la mappa di `main.tex` utilizzando i template presenti in `templates/`.
+2. Applica rigorosamente le 5 Regole d'Oro di `PROTOCOL_1to1.md` (in particolare: zero riassunti/elisioni, formule matematiche in puro LaTeX, zero box colorati tcolorbox, figure estratte via PyMuPDF a 300 DPI e zero firme AI).
+3. Elabora sequenzialmente i primi 2 capitoli/lezioni salvandoli in `tex/Capitolo_01.tex` e `tex/Capitolo_02.tex`.
+4. Al termine della scrittura, compila ogni capitolo e avvia lo script di controllo qualità `python scripts/qa_verify_fidelity.py` per certificare l'assenza di discrepanze rispetto al PDF originale.
+
+Dimmi non appena hai analizzato la cartella dei PDF ed esegui subito la conversione del Lotto 1!

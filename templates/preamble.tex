@@ -1,0 +1,79 @@
+% ==============================================================================
+% PREAMBOLO STANDARD PER DISPENSE E LIBRI ACCADEMICI (FEDELTÀ 1:1)
+% ==============================================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[italian]{babel} % Modificare in 'english' se il testo è in inglese
+
+% Pacchetti Matematici Avanzati
+\usepackage{amsmath, amssymb, amsthm, amsfonts}
+\usepackage{mathtools}
+
+% Pacchetti Grafici e Colori
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+% Percorsi multipli per trovare immagini sia dalla radice che dall'interno di tex/
+\graphicspath{{figures/}{../figures/}{raw_extract/}{../raw_extract/}}
+
+% Pacchetti per Tabelle Professionali ed Elenchi
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{enumitem}
+
+% Setup Intestazioni e Piè di pagina
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\chaptermark}[1]{\markboth{Capitolo \thechapter.\ #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
+\fancyhead[L]{\small Dispensa / Libro}
+\fancyhead[R]{\small\leftmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ==============================================================================
+% Stile Accademico Sobrio (Fedele all'Originale, Senza Box tcolorbox colorati)
+% ==============================================================================
+
+% Stile Teorema
+\newenvironment{teobox}[1][]{%
+    \par\vspace{0.3cm}\noindent\textbf{#1}\par\vspace{0.1cm}
+}{%
+    \par\vspace{0.3cm}
+}
+
+% Stile Definizione
+\newenvironment{defbox}[1][]{%
+    \par\vspace{0.35cm}\noindent\textbf{#1}\quad
+}{%
+    \par\vspace{0.25cm}
+}
+
+% Stile Osservazione / Nota / Esempio
+\newenvironment{notabox}[1][]{%
+    \par\vspace{0.35cm}\noindent\textbf{#1}\par\vspace{0.15cm}
+}{%
+    \par\vspace{0.25cm}
+}
+
+% Setup Riferimenti Ipertestuali
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!80!black,
+    citecolor=green!70!black,
+    urlcolor=blue!80!black
+}
+
+% Configurazione Layout Pagina e Font
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+
+% Pacchetto per gestione subfiles (da includere rigorosamente per ultimo)
+\usepackage{subfiles}
