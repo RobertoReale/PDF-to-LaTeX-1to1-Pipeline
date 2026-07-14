@@ -1,0 +1,8 @@
+# PDF-to-LaTeX 1:1 Fidelity Pipeline Dependencies
+# Python 3.8+ required
+
+# Core PDF extraction and vector drawing bounding box processing (fitz)
+PyMuPDF>=1.23.0
+
+# Secondary table and layout extraction analysis
+pdfplumber>=0.10.0

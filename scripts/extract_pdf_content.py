@@ -12,20 +12,20 @@ def extract_content(pdf_path, output_dir="raw_extract", figures_dir="figures"):
     os.makedirs(chapter_dir, exist_ok=True)
     
     doc = fitz.open(pdf_path)
-    print(f"[{base_name}] Estrazione da {len(doc)} pagine in corso...")
+    print(f"[{base_name}] Extracting content from {len(doc)} pages...")
     
     full_text = []
     
     for i, page in enumerate(doc):
-        # 1. Estrazione Testo Formattato (a blocchi)
+        # 1. Formatted Text Extraction (block by block)
         blocks = page.get_text("blocks")
-        full_text.append(f"--- PAGINA {i+1} ---")
+        full_text.append(f"--- PAGE {i+1} ---")
         for b in blocks:
             text = b[4].strip()
             if text:
                 full_text.append(text)
                 
-        # 2. Estrazione Immagini Raster Incorporate
+        # 2. Embedded Raster Image Extraction
         images = page.get_images(full=True)
         for img_idx, img in enumerate(images):
             xref = img[0]
@@ -36,31 +36,31 @@ def extract_content(pdf_path, output_dir="raw_extract", figures_dir="figures"):
             img_path = os.path.join(figures_dir, img_filename)
             with open(img_path, "wb") as f:
                 f.write(image_bytes)
-            print(f"  [Immagine Raster] Salvata: {img_filename}")
+            print(f"  [Raster Image] Saved: {img_filename}")
             
-        # 3. Estrazione Disegni Vettoriali (Schemi, Circuiti, Grafici)
+        # 3. Vector Drawing Extraction (Schematics, Circuits, Plots)
         drawings = page.get_drawings()
         if drawings:
-            # Calcola il bounding box complessivo o di cluster dei disegni
+            # Calculate overall bounding box or cluster of drawings
             rects = [fitz.Rect(d["rect"]) for d in drawings]
-            # Unisci i rettangoli contigui se presenti
+            # Merge contiguous rectangles if present
             if rects:
                 union_rect = rects[0]
                 for r in rects[1:]:
                     union_rect = union_rect | r
                 
-                # Se il disegno occupa uno spazio significativo, estrailo come immagine vettoriale a 300 DPI
+                # If drawing occupies significant space, extract at 300 DPI
                 if union_rect.width > 30 and union_rect.height > 30:
                     pix = page.get_pixmap(dpi=300, clip=union_rect)
                     vec_filename = f"{base_name}_p{i+1}_vector.png"
                     pix.save(os.path.join(figures_dir, vec_filename))
-                    print(f"  [Schema Vettoriale] Salvato bounding box {union_rect}: {vec_filename}")
+                    print(f"  [Vector Drawing] Saved bounding box {union_rect}: {vec_filename}")
                     
     text_path = os.path.join(chapter_dir, "text.txt")
     with open(text_path, "w", encoding="utf-8") as tf:
         tf.write("\n".join(full_text))
         
-    print(f"✔ [{base_name}] Completato! Testo di riscontro salvato in '{text_path}'.\n")
+    print(f"[OK] [{base_name}] Completed! Verification text saved to '{text_path}'.\n")
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
@@ -69,8 +69,9 @@ if __name__ == "__main__":
         pdfs = sorted(glob.glob("pdfs/*.pdf") + glob.glob("pdfs/*/*.pdf"))
         
     if not pdfs:
-        print("❌ Nessun PDF trovato. Inserisci i PDF in pdfs/ o specifica il percorso via riga di comando.")
+        print("[ERROR] No PDF found. Place PDFs inside 'pdfs/' directory or specify paths via command line.")
         sys.exit(1)
         
     for pdf in pdfs:
         extract_content(pdf)
+    sys.exit(0)

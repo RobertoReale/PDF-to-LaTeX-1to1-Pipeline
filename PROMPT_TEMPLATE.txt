@@ -1,15 +1,15 @@
-[PROMPT DA INCOLLARE ALL'AVVIO DELLA CHAT AI CON IL FILE PROTOCOL_1to1.md ALLEGATO]
+[SYSTEM / INITIAL PROMPT TO ATTACH WITH PROTOCOL_1to1.md AT THE START OF AN AI CODING SESSION]
 
-Ciao! Ti ho allegato il documento `PROTOCOL_1to1.md` che stabilisce le regole vincolanti e il protocollo di lavoro per questo progetto.
+Hello. I have attached the document `PROTOCOL_1to1.md`, which defines the binding rules and operational workflow for this project.
 
-Ho una serie di file PDF del mio corso / libro di testo all'interno della cartella `pdfs/` (oppure un unico PDF master che ho già suddiviso o che ti chiedo di mappare).
+I have a series of PDF files from a course or textbook inside the `pdfs/` directory (or a single master PDF split into chapters).
 
-Il mio obiettivo è convertire questo materiale in un progetto LaTeX di qualità editoriale, rigorosamente fedele 1:1 all'originale, modularizzato con il pacchetto `subfiles` e pronto per la compilazione su Overleaf o localmente.
+The objective is to convert this material into an editorial-grade LaTeX project with strict 1:1 fidelity to the original document, modularized using the `subfiles` package, and ready for local compilation or Overleaf upload.
 
-Per iniziare subito (Lotto 1):
-1. Verifica quali file PDF sono presenti in `pdfs/` e imposta la mappa di `main.tex` utilizzando i template presenti in `templates/`.
-2. Applica rigorosamente le 5 Regole d'Oro di `PROTOCOL_1to1.md` (in particolare: zero riassunti/elisioni, formule matematiche in puro LaTeX, zero box colorati tcolorbox, figure estratte via PyMuPDF a 300 DPI e zero firme AI).
-3. Elabora sequenzialmente i primi 2 capitoli/lezioni salvandoli in `tex/Capitolo_01.tex` e `tex/Capitolo_02.tex`.
-4. Al termine della scrittura, compila ogni capitolo e avvia lo script di controllo qualità `python scripts/qa_verify_fidelity.py` per certificare l'assenza di discrepanze rispetto al PDF originale.
+To initiate Batch 1:
+1. Inspect the PDF files inside `pdfs/` and set up `main.tex` using the templates provided in `templates/`.
+2. Strictly enforce the 5 Golden Rules of `PROTOCOL_1to1.md` (specifically: zero summarization or omissions, pure vector LaTeX mathematical formulas, zero colored `tcolorbox` backgrounds, surgical 300 DPI figure extraction via PyMuPDF, and zero AI signatures/watermarks).
+3. Process the first two chapters sequentially, saving them as `tex/Chapter_01.tex` and `tex/Chapter_02.tex`.
+4. After generating each chapter, run the local compiler (`pdflatex`) and execute `python scripts/qa_verify_fidelity.py` to certify zero lexical or structural omissions compared to the original PDF text.
 
-Dimmi non appena hai analizzato la cartella dei PDF ed esegui subito la conversione del Lotto 1!
+Please confirm once you have analyzed the `pdfs/` directory and begin processing Batch 1 immediately.

@@ -1,0 +1,41 @@
+# Python temporary files and virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.idx
+*.ind
+*.ilg
+*.lot
+*.lof
+
+# Output archives and temporary extraction directories
+raw_extract/
+*.zip
+
+# Local large PDF binaries placed in workspace during processing (keep structure via .gitkeep)
+pdfs/*.pdf
+tex/*.pdf
+
+# IDE and OS hidden files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+

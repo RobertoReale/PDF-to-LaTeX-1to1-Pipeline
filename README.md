@@ -1,108 +1,140 @@
-# 🚀 PDF-to-LaTeX 1:1 Fidelity Pipeline
-**Il Gold Standard per la conversione automatizzata di Dispense, Libri e Appunti da PDF a codice LaTeX puro e compilabile con fedeltà 1:1 tramite Agenti AI (Antigravity, Cursor, Cline, Claude, ChatGPT).**
+# PDF-to-LaTeX 1:1 Fidelity Pipeline
+
+**The Gold Standard for automated conversion of academic lecture notes, textbooks, and technical manuscripts from PDF to pure, vector-math, compilable LaTeX code with exact 1:1 fidelity using AI agents (Google Antigravity IDE, Claude Code, Cursor, Cline, Windsurf).**
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
-![LaTeX: Pure](https://img.shields.io/badge/LaTeX-Pure_Vector_Math-008080.svg)
-![Fidelity: 1:1](https://img.shields.io/badge/Fidelity-100%25_No_Summaries-brightgreen.svg)
+![LaTeX: Pure Vector Math](https://img.shields.io/badge/LaTeX-Pure_Vector_Math-008080.svg)
+![Fidelity: 100% No Summaries](https://img.shields.io/badge/Fidelity-100%25_No_Summaries-brightgreen.svg)
 
 ---
 
-## 🌟 Il Problema: Perché gli LLM falliscono nel convertire PDF in LaTeX?
+## 1. The Problem: Why LLMs Fail at Converting PDF to LaTeX
 
-Quando si chiede a un Large Language Model (LLM) o a un agente di coding di convertire un PDF universitario (es. 150-200 pagine di dispense di Fisica, Analisi, Ingegneria) in LaTeX, si verificano quasi sempre **5 errori sistematici (La Maledizione del PDF-to-LaTeX)**:
+When asking a Large Language Model (LLM) or autonomous coding agent to convert a lengthy academic PDF (e.g., a 150 to 200-page university physics, engineering, or mathematics textbook) into LaTeX, the system almost invariably encounters **five systematic failures (The PDF-to-LaTeX Curse)**:
 
-1. **🔥 Allucinazione e Riassunto (Summarization Bias):** L'LLM "sintetizza" i paragrafi prolissi del professore trasformandoli in brevi elenchi puntati o elidendo frasi esplicative. Il risultato non è una copia, ma un bignamino incompleto.
-2. **🔥 Formule in TikZ inventate o come Screenshot:** L'agente cerca di ricreare circuiti complessi o schemi vettoriali scrivendo centinaia di righe di codice TikZ errato che non compila, oppure inserisce screenshot rasterizzati e sgranati di intere equazioni matematiche invece di scriverle in codice LaTeX.
-3. **🔥 Box Colorati Distrattivi (`tcolorbox` abuse):** L'LLM cerca di rendere il documento "moderno" riempiendolo di riquadri verdi, blu o grigi per ogni definizione o teorema, rompendo la paginazione, creando artefatti visivi e violando lo stile accademico pulito dell'originale.
-4. **🔥 Collasso del Contesto (Context Window Overflow):** Cercare di processare e compilare 180 pagine in un singolo turno o in un unico file `main.tex` fa esplodere la memoria dell'agente, portando a troncamenti, dimenticanze e blocchi irrecuperabili in caso di interruzione della chat.
-5. **🔥 Firme AI e Meta-Dialogo nel Codice:** L'agente inserisce commenti come `% Generato da ChatGPT...` o testi introduttivi/conclusivi dentro il documento LaTeX.
-
----
-
-## 💡 La Soluzione: Il Protocollo Fedeltà 1:1 (Step 0quater) + Architettura `subfiles`
-
-Questo repository generalizza e pacchetta il **Protocollo Fedeltà 1:1**, un framework testato con successo su dispense universitarie complesse (es. *Fisica I - Politecnico di Milano, 164 pagine, 31 lezioni*), garantendo il **100% di precisione e zero rielaborazioni**.
-
-### I 4 Pilastri della Pipeline:
-
-#### 1️⃣ Fedeltà Assoluta (Zero Summaries & Zero Paraphrasing)
-Il prompt e le istruzioni vincolano l'agente al **verbatim typesetting**: se nel PDF originale un punto elenco è lungo 12 righe, in LaTeX deve essere un singolo `\item` di 12 righe con le esatte parole, virgole e grassetti. Mai spezzare, mai riassumere.
-
-#### 2️⃣ Equazioni in Puro LaTeX vs Schemi Vettoriali ad Alta Precisione (`get_drawings`)
-- **Tutte le formule matematiche** (`align`, `gather`, `cases`, matrici, integrali) vengono rigorosamente digitate in puro codice LaTeX vettoriale numerato.
-- **Tutti i grafici, circuiti e disegni** vengono estratti chirurgicamente ad alta risoluzione (300 DPI) tramite uno script Python basato su `PyMuPDF` (`fitz.Rect`), ritagliando esattamente il bounding box del disegno ed escludendo il testo circostante. Nessuna perdita di tempo in TikZ approssimativi.
-
-#### 3️⃣ Architettura Modulare Resiliente (`subfiles` & Lotti Sequenziali)
-Il progetto viene diviso in file indipendenti per capitolo/lezione (`tex/cap_01.tex`, `tex/cap_02.tex`...) che condividono un preambolo comune (`preamble.tex`).
-Ogni file inizia con `\documentclass[../main.tex]{subfiles}`:
-- Compilazione fulminea del singolo capitolo durante la lavorazione.
-- Inclusione pulita in `main.tex` (`\subfile{tex/cap_01}`) per la compilazione finale a centinaia di pagine.
-- **Immunità alle interruzioni della chat:** Se la sessione AI va in timeout o raggiunge il limite di token, la nuova sessione riprende istantaneamente dal capitolo successivo verificando il lavoro già salvato su disco.
-
-#### 4️⃣ Circuito di Verifica QA Automatico (`qa_verify_fidelity.py` + `final_audit.py`)
-Invece di fidarsi "a occhio", la pipeline include script Python che eseguono un **controllo incrociato programmatico (Diff Check)** tra il testo del PDF originale e il PDF compilato in LaTeX, segnalando qualsiasi discrepanza o omissione prima di procedere al capitolo successivo.
+1. **Summarization Bias (Hallucination & Elision):** LLMs naturally condense and "synthesize" dense academic prose into abbreviated bulleted lists or omit critical explanatory sentences. The result is an incomplete summary rather than a faithful transcription.
+2. **Hallucinated TikZ vs. Rasterized Screenshots:** When encountering complex circuit diagrams, vector plots, or geometry schematics, agents either waste thousands of tokens writing broken, uncompilable TikZ code or insert low-resolution, rasterized screenshots of entire mathematical equations instead of typing them as vector LaTeX math.
+3. **Distractive Colored Box Clutter (`tcolorbox` Abuse):** In an attempt to make the document look "modern," AI agents wrap every definition, theorem, and example in heavy colored frame boxes (`tcolorbox` with green, blue, or gray backgrounds), breaking vertical pagination, causing layout artifacts, and violating clean classical academic typography.
+4. **Context Window Overflow:** Attempting to process and compile a 180-page document in a single prompt or within a monolithic `main.tex` file exhausts the model's context window, leading to severe truncation, memory loss, and unrecoverable failures when chat sessions time out.
+5. **AI Signatures and Meta-Dialogue:** Agents frequently inject conversational meta-commentary or watermarks (e.g., `% Generated by ChatGPT...` or concluding note boxes inside the `.tex` files).
 
 ---
 
-## 📁 Struttura del Repository
+## 2. The Solution: The 1:1 Fidelity Protocol + `subfiles` Architecture
+
+This repository standardizes the **1:1 Fidelity Protocol**, a robust, production-tested pipeline designed specifically for complex academic curricula, guaranteeing **100% transcription accuracy with zero summarization and zero visual clutter**.
+
+### The Four Pillars of the Pipeline:
+
+#### 1. Verbatim Transcription (Zero Summaries & Zero Paraphrasing)
+The prompt template and system rules strictly bind the AI agent to verbatim typesetting. If a bullet point in the original PDF spans 12 lines, the resulting LaTeX code must output a single `\item` spanning 12 lines with exact wording, punctuation, and typographical emphasis.
+
+#### 2. Pure Vector LaTeX Math vs. High-Precision Bounding Box Extraction (`PyMuPDF`)
+- **All mathematical formulas** (`align`, `gather`, `cases`, matrices, integrals) are rigorously typed in pure vector LaTeX code with correct numbering.
+- **All diagrams, plots, and schematics** are surgically extracted at high resolution (300 DPI) using an automated Python script based on `PyMuPDF` (`fitz.Rect`). The script calculates exact bounding boxes around vector drawings while excluding surrounding text and math, eliminating time wasted on approximate TikZ reconstructions.
+
+#### 3. Resilient Modular Architecture (`subfiles` & Sequential Batches)
+The project is partitioned into independent chapter subfiles (`tex/Chapter_01.tex`, `tex/Chapter_02.tex`, etc.) sharing a common academic preamble (`preamble.tex`).
+Every subfile begins with `\documentclass[../main.tex]{subfiles}`:
+- Rapid compilation of individual chapters during active development.
+- Clean integration in `main.tex` (`\subfile{tex/Chapter_01}`) for final document assembly.
+- **Immunity to session timeouts:** If an AI chat session reaches its token limit, a new session resumes instantaneously from the next batch without re-processing completed chapters.
+
+#### 4. Automated QA Verification Circuit (`qa_verify_fidelity.py` + `final_audit.py`)
+Instead of relying on visual inspection, the pipeline integrates programmatic Python verification scripts. The QA checker runs an automated cross-comparison between the raw text of the original PDF and the text extracted from the compiled LaTeX PDF, raising critical alerts if character ratios drop below thresholds or lexical omissions are detected.
+
+---
+
+## 3. Compatibility & Comparison: Antigravity IDE vs. Claude Code vs. Other Agents
+
+A frequent architectural question is whether this project is exclusive to **Google Antigravity IDE** or whether it applies equally to **Claude Code**, **Cursor**, **Cline**, and **Windsurf**—and specifically how it compares against general-purpose LaTeX repositories such as [`ndpvt-web/latex-document-skill`](https://github.com/ndpvt-web/latex-document-skill).
+
+### Comparison: `PDF-to-LaTeX-1to1-Pipeline` vs. `latex-document-skill`
+
+| Architectural Dimension | `latex-document-skill` (General Purpose) | `PDF-to-LaTeX-1to1-Pipeline` (Gold Standard 1:1) |
+| :--- | :--- | :--- |
+| **Primary Objective** | Broad, creative document generation from natural language prompts (`plain English -> LaTeX PDF`) across 27 distinct templates (resumes, cheat sheets, posters, general notes). | Rigorous **1:1 verbatim conversion** of existing academic curricula (150+ page textbooks and lecture notes) into exact LaTeX replicas. |
+| **Summarization Policy** | Actively encourages *telegram-style compression* (e.g., converting a 162-page textbook scan into a 2-page cheat sheet or summarizing notes). | **Strictly prohibited.** Enforces zero summarization, zero elision, and exact character-for-character fidelity. |
+| **Visual Styling** | Utilizes heavy styling including colorful `tcolorbox` environments (blue theorems, green definitions, orange examples). | **Classical Academic Styling.** Strictly bans colored box backgrounds that break pagination, using clean typography (`preamble.tex`). |
+| **Figure & Diagram Handling** | Relies on OCR profiles and automated or creative TikZ generation depending on prompt constraints. | **Surgical PyMuPDF Bounding Box Extraction.** Automatically isolates vector drawings at 300 DPI (`fitz.Rect`) while typing all math in pure vector LaTeX. |
+| **Quality Assurance (QA)** | Validates compilation success (`pdflatex` / `chktex`) and syntax errors. | **Programmatic Lexical Diff Checking (`qa_verify_fidelity.py`).** Automatically checks character length ratios and detects missing domain keywords against the original PDF text. |
+
+### Why This Pipeline is Critical Across All Agentic Environments
+
+While `latex-document-skill` is exceptional for generating *new* documents or condensed cheat sheets, **`PDF-to-LaTeX-1to1-Pipeline` is the indispensable framework when your goal is exact academic preservation without AI summarization.**
+
+- **Google Antigravity IDE:** Fully optimized for Antigravity's autonomous task management, local terminal execution, batch execution, and workspace artifact structure. Antigravity can execute the full extraction, conversion, and audit loop autonomously.
+- **Claude Code:** Perfectly compatible and highly recommended. While `latex-document-skill` gives Claude Code broad templates, feeding Claude Code *this* repository (`PROTOCOL_1to1.md` and `PROMPT_TEMPLATE.txt`) transforms Claude Code from a creative summarizer into a precision typesetting agent immune to context window collapse on 200-page textbooks.
+- **Cursor, Cline, and Windsurf:** These IDE-integrated autonomous agents thrive under the modular `subfiles` structure and automated QA verification loop (`qa_verify_fidelity.py`), allowing developers to convert heavy mathematical literature in verifiable batches.
+
+---
+
+## 4. Repository Structure
 
 ```text
 PDF-to-LaTeX-1to1-Pipeline/
-├── PROTOCOL_1to1.md           # Le istruzioni operative da fornire al tuo Agente AI
-├── PROMPT_TEMPLATE.txt        # Il prompt iniziale da copiare/incollare all'avvio della chat
-├── templates/                 # Scheletri LaTeX pronti all'uso
-│   ├── main.tex               # Documento master modulare
-│   ├── preamble.tex           # Preambolo accademico pulito (zero tcolorbox colorati)
-│   └── subfile_chapter.tex    # Boilerplate per ogni singolo capitolo/lezione
-└── scripts/                   # Automazioni Python per estrazione e verifica
-    ├── extract_pdf_content.py # Estrattore universale di testo grezzo e disegni/figure a 300 DPI
-    ├── qa_verify_fidelity.py  # Diff Checker 1:1 tra PDF originale e PDF compilato
-    ├── final_audit.py         # Audit automatico di tutta la codebase e verifica integrità
-    └── package_overleaf.py    # Generatore di pacchetto .zip pulito per Overleaf
+├── PROTOCOL_1to1.md           # Mandatory operational protocol for AI agents
+├── PROMPT_TEMPLATE.txt        # System prompt to copy-paste at chat initiation
+├── .cursorrules               # Instant rule recognition for Cursor IDE
+├── .clinerules                # Instant rule recognition for Cline / Roo Code
+├── .agents/skills/            # Native skill definitions for Antigravity & Claude Code
+├── templates/                 # Production-ready LaTeX boilerplate
+│   ├── main.tex               # Modular master document
+│   ├── preamble.tex           # Clean academic preamble (zero colored box clutter)
+│   └── subfile_chapter.tex    # Standardized chapter subfile template
+└── scripts/                   # Automated Python extraction, compilation, and QA verification tools
+    ├── prepare_batches.py     # Automated PDF TOC/chapter partitioner and main.tex initializer
+    ├── extract_pdf_content.py # Universal raw text and 300 DPI vector drawing extractor
+    ├── compile_and_check.py   # Multi-platform LaTeX compiler, surgical error parser & auto-QA
+    ├── qa_verify_fidelity.py  # Programmatic 1:1 diff checker & math density linter
+    ├── final_audit.py         # Global codebase syntax and protocol compliance auditor
+    └── package_overleaf.py    # Automated ZIP packager for Overleaf deployment
 ```
 
 ---
 
-## 🛠️ Guida Rapida all'Uso (Quickstart)
+## 5. Quickstart Guide
 
-### 1. Preparazione dell'Ambiente
-Crea una cartella per il tuo progetto e copia all'interno il contenuto di questo repository.
-Installati i requisiti Python (necessari per gli script automatici usati dall'agente):
+### Step 1: Environment Setup
+Create a project workspace and copy the contents of this repository into the root directory.
+Install the required Python dependencies for automated extraction and verification:
 ```bash
 pip install PyMuPDF pdfplumber
 ```
 
-### 2. Inserimento dei PDF Originali
-Crea una cartella `pdfs/` e inserisci il tuo documento originale (es. `Libro_Master.pdf` oppure i singoli capitoli/lezioni `Capitolo_01.pdf`, `Capitolo_02.pdf`, ecc.).
-> 💡 *Suggerimento:* Se hai un PDF unico gigante da 200 pagine, dividilo prima in singoli PDF per capitolo (`Capitolo_01.pdf` ... `Capitolo_N.pdf`). Questo garantisce tagli precisi, impedisce sovrapposizioni di bounding box e facilita il controllo programmatico della fedeltà!
-
-### 3. Setup della Codebase LaTeX
-Copia i file dalla cartella `templates/` nella radice del tuo progetto:
-- `templates/main.tex` $\rightarrow$ `main.tex`
-- `templates/preamble.tex` $\rightarrow$ `preamble.tex`
-Crea le cartelle necessarie:
+### Step 2: Source PDF Preparation & Batch Partitioning
+Create a `pdfs/` directory and place your original master PDF document inside (e.g., `Master_Textbook.pdf`).
+Instead of manually splitting the PDF or setting up `main.tex`, run our automated batch preparation utility:
 ```bash
-mkdir tex figures raw_extract build
+python scripts/prepare_batches.py --pdf pdfs/Master_Textbook.pdf
 ```
+> **Note:** The script automatically detects the PDF Table of Contents (`doc.get_toc()`), partitions the book into individual chapter PDFs (`pdfs/Chapter_01_*.pdf`), initializes skeleton `.tex` files inside `tex/`, and configures all modular `\subfile{...}` entries in `main.tex`.
 
-### 4. Avvio dell'Agente AI (Antigravity, Cursor, Cline, Claude, ChatGPT)
-Apri il tuo IDE/Agente preferito, allega come contesto il file **`PROTOCOL_1to1.md`** e avvia la conversazione incollando il contenuto di **`PROMPT_TEMPLATE.txt`** (modificando solo il titolo del libro/dispensa e la cartella dei PDF).
+### Step 3: Launching the AI Agent
+Open your preferred agentic coding environment:
+- **Google Antigravity IDE / Claude Code:** Automatically detects `.agents/skills/pdf-to-latex-1to1/SKILL.md`.
+- **Cursor IDE / Cline / Roo Code:** Automatically detects `.cursorrules` and `.clinerules`.
 
-L'agente inizierà a lavorare **a lotti sequenziali di 2-3 capitoli alla volta**:
-1. Eseguirà `extract_pdf_content.py` per estrarre testi e ritagliare le figure ad alta risoluzione in `figures/`.
-2. Scriverà il codice LaTeX in `tex/Capitolo_XX.tex` seguendo rigorosamente il preambolo accademico e digitando le formule in puro LaTeX.
-3. Compilerà con `pdflatex` ed eseguirà `qa_verify_fidelity.py` per certificare che non abbia riassunto o saltato nulla.
-4. Passerà ai capitoli successivi. In caso di interruzione della chat, basterà aprire una nuova chat pulita e dire: *«Continua la conversazione dal Capitolo XX applicando il Protocollo 1:1»*.
+Alternatively, attach **`PROTOCOL_1to1.md`** as context and paste **`PROMPT_TEMPLATE.txt`** into the chat prompt.
 
-### 5. Compilazione Finale e Caricamento su Overleaf
-Una volta completati tutti i capitoli, chiedi all'agente di eseguire l'audit globale e creare il pacchetto Overleaf:
+The agent will execute sequentially in **batches of 2 to 3 chapters**:
+1. Run `python scripts/extract_pdf_content.py pdfs/Chapter_XX.pdf` to isolate text and extract 300 DPI vector schematics into `figures/`.
+2. Typeset pure LaTeX code in `tex/Chapter_XX.tex` adhering strictly to the classical academic preamble (`preamble.tex`).
+3. Execute the integrated compilation and verification loop:
+```bash
+python scripts/compile_and_check.py tex/Chapter_XX.tex
+```
+> **Note:** `compile_and_check.py` compiles the chapter locally, parses surgical line-by-line feedback if syntax errors occur, and automatically runs `qa_verify_fidelity.py` upon success to verify character ratios (`ratio > 70%`) and mathematical equation density before moving forward.
+
+### Step 5: Final Audit and Overleaf Packaging
+Once all chapters are processed and verified, instruct the agent to run the global compliance audit and build the Overleaf deployment package:
 ```bash
 python scripts/final_audit.py
 python scripts/package_overleaf.py
 ```
-Otterrai un archivio compresso **`Progetto_Overleaf.zip`** contenente solo `main.tex`, `preamble.tex`, i subfiles `tex/*.tex` e le figure `figures/*`, pronto per essere trascinato su [Overleaf](https://www.overleaf.com/) per una compilazione istantanea e perfetta!
+You will receive **`Overleaf_Project_1to1.zip`**, containing `main.tex`, `preamble.tex`, all chapter subfiles (`tex/*.tex`), and all figures (`figures/*`), ready for instantaneous compilation on [Overleaf](https://www.overleaf.com/).
 
 ---
 
-## 📄 Licenza
-Rilasciato sotto licenza MIT. Sentiti libero di biforcare, migliorare e adattare questo protocollo per qualsiasi corso universitario, libro di testo o manuale tecnico!
+## 6. License
+Released under the MIT License. You are free to fork, adapt, and scale this protocol for any academic course, scientific textbook, or technical documentation workflow.
