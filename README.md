@@ -102,13 +102,22 @@ Install the required Python dependencies for automated extraction and verificati
 pip install PyMuPDF pdfplumber
 ```
 
-### Step 2: Source PDF Preparation & Batch Partitioning
-Create a `pdfs/` directory and place your original master PDF document inside (e.g., `Master_Textbook.pdf`).
-Instead of manually splitting the PDF or setting up `main.tex`, run our automated batch preparation utility:
+### Step 2: Source PDF Preparation & Batch Setup (Universal Multi-Mode)
+Place your source material inside the `pdfs/` directory. The automated batch utility (`prepare_batches.py`) is general and versatile, supporting **both single master textbooks and multiple pre-split lecture PDFs** out of the box:
+
+#### Scenario A: Single Master Textbook (Split Mode)
+If you have a single large PDF (e.g., `pdfs/Master_Textbook.pdf`), the script detects its Table of Contents (`doc.get_toc()`) or splits it into fixed page chunks:
 ```bash
 python scripts/prepare_batches.py --pdf pdfs/Master_Textbook.pdf
 ```
-> **Note:** The script automatically detects the PDF Table of Contents (`doc.get_toc()`), partitions the book into individual chapter PDFs (`pdfs/Chapter_01_*.pdf`), initializes skeleton `.tex` files inside `tex/`, and configures all modular `\subfile{...}` entries in `main.tex`.
+
+#### Scenario B: Multiple Pre-Split Lecture Notes (Existing Mode)
+If you already have multiple independent PDF files inside `pdfs/` (e.g., `Lecture_01.pdf`, `Lecture_02.pdf`, `Lecture_03.pdf`), simply run the script without arguments or in auto/existing mode:
+```bash
+python scripts/prepare_batches.py --mode existing
+```
+
+> **Note:** In both scenarios, `prepare_batches.py` automatically initializes skeleton `.tex` subfiles inside `tex/` (`tex/Chapter_01.tex` or `tex/Lecture_01.tex`) and configures `main.tex` with modular `\subfile{...}` references, ready for sequential 1:1 conversion.
 
 ### Step 3: Launching the AI Agent
 Open your preferred agentic coding environment:
