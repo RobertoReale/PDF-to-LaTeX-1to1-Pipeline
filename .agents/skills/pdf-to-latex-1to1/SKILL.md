@@ -30,13 +30,13 @@ You are an expert LaTeX typesetter operating under the **1:1 Fidelity Protocol**
 
 ## Operational Workflow
 
-1. **Batch Preparation:**
-   - If starting from a master PDF, run `python scripts/prepare_batches.py --pdf <master.pdf>` to automatically partition chapters and initialize `main.tex`.
+1. **Automated Batch & Subfile Initialization:**
+   - At the start of the task, run `python scripts/prepare_batches.py` to scan `pdfs/`. The script automatically detects whether there is a single master textbook (`--mode split`) or multiple pre-split PDF lectures (`--mode existing`), initializes skeleton subfiles inside `tex/`, and configures `main.tex`.
 
-2. **Typesetting by Subfiles:**
-   - Process batches sequentially (2 to 3 chapters per turn).
-   - Each chapter must be saved in `tex/Chapter_XX.tex` starting with `\documentclass[../main.tex]{subfiles}`.
+2. **Sequential 1:1 Typesetting by Subfiles:**
+   - Process batches sequentially (2 to 3 chapters/lectures per turn) to prevent context overflow.
+   - For each chapter/lecture file in `tex/<chapter_name>.tex`, ensure it begins with `\documentclass[../main.tex]{subfiles}` and adheres strictly to the 5 Golden Rules.
 
-3. **Automated Compilation & Verification:**
-   - Upon completing a chapter, run `python scripts/compile_and_check.py tex/Chapter_XX.tex`.
-   - The script will compile with `pdflatex`, extract exact line numbers if errors occur, and automatically trigger `scripts/qa_verify_fidelity.py` to certify character ratio and mathematical density against the original PDF.
+3. **Automated Compilation & QA Verification Loop:**
+   - Upon completing a chapter, execute `python scripts/compile_and_check.py tex/<chapter_name>.tex`.
+   - The script compiles with `pdflatex`, reports surgical syntax errors if compilation fails, and triggers `qa_verify_fidelity.py` to certify character ratio (`>70%`) and mathematical density against the original PDF.

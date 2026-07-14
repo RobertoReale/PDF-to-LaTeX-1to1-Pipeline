@@ -10,7 +10,8 @@ You are bound to the **1:1 Fidelity Protocol** (`PROTOCOL_1to1.md`) for all conv
 5. **Zero AI Signatures:** Never include watermarks or meta-dialogue comments.
 
 ## Required Execution Workflow per Chapter
-When writing `tex/Chapter_XX.tex`:
-1. Save the file with header `\documentclass[../main.tex]{subfiles}`.
-2. Run `python scripts/compile_and_check.py tex/Chapter_XX.tex` to locally compile, extract surgical syntax errors if any, and automatically run `qa_verify_fidelity.py`.
-3. If the QA check flags missing words or low character ratios (`< 70%`), fix the elisions before reporting completion.
+When initiating conversion or writing `tex/<chapter_name>.tex`:
+1. If starting a fresh conversion, run `python scripts/prepare_batches.py` first to auto-initialize `main.tex` and skeleton subfiles from whatever PDFs exist inside `pdfs/`.
+2. Save the chapter file with header `\documentclass[../main.tex]{subfiles}`.
+3. Run `python scripts/compile_and_check.py tex/<chapter_name>.tex` to locally compile, extract surgical syntax errors if any, and automatically run `qa_verify_fidelity.py`.
+4. If the QA check flags missing words or low character ratios (`< 70%`), fix the elisions before reporting completion.

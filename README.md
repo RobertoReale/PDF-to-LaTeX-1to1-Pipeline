@@ -102,32 +102,29 @@ Install the required Python dependencies for automated extraction and verificati
 pip install PyMuPDF pdfplumber
 ```
 
-### Step 2: Source PDF Preparation & Batch Setup (Universal Multi-Mode)
-Place your source material inside the `pdfs/` directory. The automated batch utility (`prepare_batches.py`) is general and versatile, supporting **both single master textbooks and multiple pre-split lecture PDFs** out of the box:
+### Step 2: Zero-Friction PDF Placement
+Simply drop your source material inside the `pdfs/` directory:
+- **Single Master Textbook:** e.g., `pdfs/Master_Textbook.pdf`
+- **Multiple Lecture Notes:** e.g., `pdfs/Lecture_01.pdf`, `pdfs/Lecture_02.pdf`, `pdfs/Lecture_03.pdf`
 
-#### Scenario A: Single Master Textbook (Split Mode)
-If you have a single large PDF (e.g., `pdfs/Master_Textbook.pdf`), the script detects its Table of Contents (`doc.get_toc()`) or splits it into fixed page chunks:
-```bash
-python scripts/prepare_batches.py --pdf pdfs/Master_Textbook.pdf
-```
+You do **not** need to run any terminal commands manually or split the files yourself!
 
-#### Scenario B: Multiple Pre-Split Lecture Notes (Existing Mode)
-If you already have multiple independent PDF files inside `pdfs/` (e.g., `Lecture_01.pdf`, `Lecture_02.pdf`, `Lecture_03.pdf`), simply run the script without arguments or in auto/existing mode:
-```bash
-python scripts/prepare_batches.py --mode existing
-```
+> **Optional Manual Setup (For Advanced Users):** If you prefer to pre-partition chapters or inspect `main.tex` before launching the AI, you can run:
+> ```bash
+> python scripts/prepare_batches.py
+> ```
+> The script auto-detects single or multiple PDFs, partitions chapters if needed, and initializes skeleton subfiles inside `tex/` + `main.tex`.
 
-> **Note:** In both scenarios, `prepare_batches.py` automatically initializes skeleton `.tex` subfiles inside `tex/` (`tex/Chapter_01.tex` or `tex/Lecture_01.tex`) and configures `main.tex` with modular `\subfile{...}` references, ready for sequential 1:1 conversion.
-
-### Step 3: Launching the AI Agent
+### Step 3: Launching the AI Agent (Fully Automated from Start to Overleaf)
 Open your preferred agentic coding environment:
 - **Google Antigravity IDE / Claude Code:** Automatically detects `.agents/skills/pdf-to-latex-1to1/SKILL.md`.
 - **Cursor IDE / Cline / Roo Code:** Automatically detects `.cursorrules` and `.clinerules`.
 
 Alternatively, attach **`PROTOCOL_1to1.md`** as context and paste **`PROMPT_TEMPLATE.txt`** into the chat prompt.
 
-The agent will execute sequentially in **batches of 2 to 3 chapters**:
-1. Run `python scripts/extract_pdf_content.py pdfs/Chapter_XX.pdf` to isolate text and extract 300 DPI vector schematics into `figures/`.
+The AI agent will take over and execute the entire workflow automatically:
+1. **Auto-Initialization:** Runs `python scripts/prepare_batches.py` to scan `pdfs/` and configure `main.tex` + `tex/`.
+2. **Extraction:** Runs `python scripts/extract_pdf_content.py pdfs/<chapter>.pdf` to isolate raw verification text and extract 300 DPI vector schematics into `figures/`.
 2. Typeset pure LaTeX code in `tex/Chapter_XX.tex` adhering strictly to the classical academic preamble (`preamble.tex`).
 3. Execute the integrated compilation and verification loop:
 ```bash

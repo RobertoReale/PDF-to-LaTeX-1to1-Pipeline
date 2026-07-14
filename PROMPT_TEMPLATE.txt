@@ -7,9 +7,9 @@ I have a series of PDF files from a course or textbook inside the `pdfs/` direct
 The objective is to convert this material into an editorial-grade LaTeX project with strict 1:1 fidelity to the original document, modularized using the `subfiles` package, and ready for local compilation or Overleaf upload.
 
 To initiate Batch 1:
-1. Inspect the PDF files inside `pdfs/` and set up `main.tex` using the templates provided in `templates/`.
+1. Run `python scripts/prepare_batches.py` to automatically partition or register whatever PDF files exist inside `pdfs/` (whether a single master textbook or multiple independent lecture PDFs) and initialize `main.tex` and skeleton subfiles inside `tex/`.
 2. Strictly enforce the 5 Golden Rules of `PROTOCOL_1to1.md` (specifically: zero summarization or omissions, pure vector LaTeX mathematical formulas, zero colored `tcolorbox` backgrounds, surgical 300 DPI figure extraction via PyMuPDF, and zero AI signatures/watermarks).
-3. Process the first two chapters sequentially, saving them as `tex/Chapter_01.tex` and `tex/Chapter_02.tex`.
-4. After generating each chapter, run the local compiler (`pdflatex`) and execute `python scripts/qa_verify_fidelity.py` to certify zero lexical or structural omissions compared to the original PDF text.
+3. Process the first two chapters/lectures sequentially, saving or completing them inside `tex/`.
+4. After generating each chapter, run `python scripts/compile_and_check.py tex/<chapter_name>.tex` to locally compile, check syntax errors, and automatically execute `qa_verify_fidelity.py` to certify zero lexical or structural omissions compared to the original PDF text.
 
 Please confirm once you have analyzed the `pdfs/` directory and begin processing Batch 1 immediately.
