@@ -6,10 +6,8 @@ I have a series of PDF files from a course or textbook inside the `pdfs/` direct
 
 The objective is to convert this material into an editorial-grade LaTeX project with strict 1:1 fidelity to the original document, modularized using the `subfiles` package, and ready for local compilation or Overleaf upload.
 
-To initiate Batch 1:
-1. Run `python scripts/prepare_batches.py` to automatically partition or register whatever PDF files exist inside `pdfs/` (whether a single master textbook or multiple independent lecture PDFs) and initialize `main.tex` and skeleton subfiles inside `tex/`.
-2. Strictly enforce the 5 Golden Rules of `PROTOCOL_1to1.md` (specifically: zero summarization or omissions, pure vector LaTeX mathematical formulas, zero colored `tcolorbox` backgrounds, surgical 300 DPI figure extraction via PyMuPDF, and zero AI signatures/watermarks).
-3. Process the first two chapters/lectures sequentially, saving or completing them inside `tex/`.
-4. After generating each chapter, run `python scripts/compile_and_check.py tex/<chapter_name>.tex` to locally compile, check syntax errors, and automatically execute `qa_verify_fidelity.py` to certify zero lexical or structural omissions compared to the original PDF text.
-
-Please confirm once you have analyzed the `pdfs/` directory and begin processing Batch 1 immediately.
+To initiate the project:
+1. **Auto-Discovery & Partitioning:** Run `python scripts/prepare_batches.py` to automatically partition or register whatever PDF files exist inside `pdfs/` (whether a single master textbook or multiple independent lecture PDFs) and initialize `main.tex` and skeleton subfiles inside `tex/`.
+2. **Audit Briefing & Confirmation:** Present a clear, concise summary to me stating what mode was detected (`Scenario A: Single Master PDF` vs `Scenario B: Multiple Lecture Notes`), list the exact chapter/lecture files detected, and explicitly ask for my confirmation before starting Batch 1 conversion (`Do you confirm to proceed with Batch 1 (Chapters 1 & 2)?`).
+3. **Execution (After Confirmation):** Once confirmed, strictly enforce the 5 Golden Rules of `PROTOCOL_1to1.md` and process the first batch (up to 2-3 chapters sequentially inside `tex/`).
+4. **Verification Loop:** After generating each chapter, run `python scripts/compile_and_check.py tex/<chapter_name>.tex` to locally compile, check syntax errors, and automatically execute `qa_verify_fidelity.py` to certify zero lexical or structural omissions (`>70%` character ratio).

@@ -12,6 +12,7 @@ You are bound to the **1:1 Fidelity Protocol** (`PROTOCOL_1to1.md`) for all conv
 ## Required Execution Workflow per Chapter
 When initiating conversion or writing `tex/<chapter_name>.tex`:
 1. If starting a fresh conversion, run `python scripts/prepare_batches.py` first to auto-initialize `main.tex` and skeleton subfiles from whatever PDFs exist inside `pdfs/`.
-2. Save the chapter file with header `\documentclass[../main.tex]{subfiles}`.
-3. Run `python scripts/compile_and_check.py tex/<chapter_name>.tex` to locally compile, extract surgical syntax errors if any, and automatically run `qa_verify_fidelity.py`.
-4. If the QA check flags missing words or low character ratios (`< 70%`), fix the elisions before reporting completion.
+2. Present a clear audit briefing to the user (listing detected mode and chapters) and wait for explicit confirmation before writing Batch 1.
+3. Save the chapter file with header `\documentclass[../main.tex]{subfiles}`.
+4. Run `python scripts/compile_and_check.py tex/<chapter_name>.tex` to locally compile, extract surgical syntax errors if any, and automatically run `qa_verify_fidelity.py`.
+5. If the QA check flags missing words or low character ratios (`< 70%`), fix the elisions before reporting completion.
