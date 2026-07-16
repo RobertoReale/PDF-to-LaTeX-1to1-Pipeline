@@ -2,11 +2,13 @@
 % STANDARD ACADEMIC PREAMBLE FOR 1:1 FIDELITY CONVERSION
 % ==============================================================================
 
+\usepackage{silence}
+\WarningFilter{latex}{Command \showhyphens has changed}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage{microtype}
-\usepackage[english]{babel} % Change to 'italian', 'french', 'german', etc., matching your source document
+\usepackage[verbose=silent,nopatch={showhyphens,item}]{microtype}
+\usepackage[italian]{babel} % Change to 'english', 'french', 'german', etc., matching your source document
 
 % Advanced Mathematical Packages
 \usepackage{amsmath, amssymb, amsthm, amsfonts}
@@ -79,6 +81,13 @@
 % which predates this \geometry call, so it must be resynced here or the header
 % rule and \fancyhead[L] misalign against the body's left margin.
 \setlength{\headwidth}{\textwidth}
+
+% Justification tolerances (prevents Underfull/Overfull \hbox and \vbox in tight minipages)
+\tolerance=2000
+\hbadness=2000
+\vbadness=2000
+\emergencystretch=3em
+\raggedbottom
 
 % Subfiles Package Management (Must strictly be included last)
 \usepackage{subfiles}
