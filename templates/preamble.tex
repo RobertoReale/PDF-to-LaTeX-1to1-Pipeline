@@ -30,6 +30,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
+\setlength{\headheight}{26pt}
 \renewcommand{\chaptermark}[1]{\markboth{Chapter \thechapter.\ #1}{}}
 \renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
 \fancyhead[L]{\small Academic Document}
@@ -73,7 +74,11 @@
 
 % Page Layout and Geometry Configuration
 \usepackage{geometry}
-\geometry{a4paper, margin=2.5cm}
+\geometry{a4paper, margin=2.5cm, marginparwidth=0pt, marginparsep=0pt, hmarginratio=1:1}
+% fancyhdr's \headwidth is frozen to \textwidth at package-load time (line 30),
+% which predates this \geometry call, so it must be resynced here or the header
+% rule and \fancyhead[L] misalign against the body's left margin.
+\setlength{\headwidth}{\textwidth}
 
 % Subfiles Package Management (Must strictly be included last)
 \usepackage{subfiles}
